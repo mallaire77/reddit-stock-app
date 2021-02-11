@@ -31,13 +31,18 @@ const redditOptions = [
     value: "Pennystocks",
     content: "r/PennyStocks",
   },
+  {
+    key: "WallStreeBets",
+    text: "r/wallstreetbets",
+    value: "WallStreeBets",
+    content: "r/wallstreetbets",
+  },
 ];
 
 function Subreddit() {
   const [ticks, setTicks] = useState([]);
   const [choice, setSub] = useState("");
   const [arrkeys, setKeys] = useState([]);
-
 
   function Sub_active(val) {
     if (Object.keys(ticks).length > 1) {
@@ -59,10 +64,8 @@ function Subreddit() {
             <Icon name="angle double up" inverted color="green"></Icon>
             Top Stock Picks
           </Header>
-
           <Container>
           </Container>
-
           <Header
             as="h1"
             // content=""
@@ -96,7 +99,6 @@ function Subreddit() {
       );
     } else {
       console.log(val);
-
       return <div></div>;
     }
   }
@@ -176,7 +178,6 @@ function Subreddit() {
           ></Icon>
         </Header>
       </Divider>
-
       <Sub_active val={ticks}></Sub_active>
     </div>
   );

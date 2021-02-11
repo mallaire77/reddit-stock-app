@@ -4,29 +4,20 @@ from praw.models.listing.mixins import subreddit
 from collections import Counter
 import operator
 import re
-
 from prawcore import requestor
 
 client_id = "El3blMg2SrLwzQ"
 client_secret ="JWLEBjSXCer9UkM4WqkHVl0-EdOipw"
 user_agent="testing_api"
 
-
-
 main = Blueprint('main',__name__)
-
-
-# reddit_canPen = reddit.subreddit("Canadapennystocks").hot(limit=1000)
-# reddit_canInv= reddit.subreddit("CanadianInvestor").hot(limit=1000) 
-# reddit_baySt = reddit.subreddit("Baystreetbets").hot(limit=500) 
 
 def create_subreddit(client_id,client_secret,user_agent,sub_name):
     reddit = praw.Reddit(client_id=client_id,client_secret=client_secret,user_agent=user_agent)
-    sub_reddit = reddit.subreddit(sub_name).hot(limit=400)
+    sub_reddit = reddit.subreddit(sub_name).hot(limit=1000)
     return sub_reddit
 
 def find_ticker_counter(subreddit):
-    
     tickers=[]
     hashArray=[]
     hashTicks={}
@@ -46,13 +37,10 @@ def find_ticker_counter(subreddit):
                     hashTicks[word[1:len(word)]]=1                
                 elif word in hashTicks:
                     hashTicks[word[1:len(word)]]+=1
-
-
         for ticks in tickers:
             if ticks in word:
                 hashTicks[ticks]+=1
 
-    
     improv={}
     for key in hashTicks:
         if hashTicks[key]>1:
@@ -92,7 +80,6 @@ def find_ticker_counter(subreddit):
     final['colors']=colors_arr
     return hashArray,sub_array[0:40],final
 
-
 # Returns the Tickers and the ticker hounders
 @main.route('/get_stocks',methods=['POST'])
 def get_stocks():
@@ -101,6 +88,4 @@ def get_stocks():
     print(subreddit_choice)
     reddit_choice = create_subreddit(client_id=client_id,client_secret=client_secret,user_agent=user_agent,sub_name=subreddit_choice)
     tickers=find_ticker_counter(reddit_choice)
-    
-
     return jsonify({'tickers':tickers})
